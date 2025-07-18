@@ -74,4 +74,6 @@ public partial class CompanyInfo
     /// 新增時間
     /// </summary>
     public DateTime CreatedAt { get; set; }
+
+    public int? Headcount { get; set; }
 }

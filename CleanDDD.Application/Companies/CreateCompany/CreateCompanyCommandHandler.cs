@@ -9,14 +9,9 @@ using CleanDDD.Domain.Companies;
 using CleanDDD.Domain.Companies.ValueObjects;
 
 namespace CleanDDD.Application.Companies.CreateCompany;
-    internal class CreateCompanyCommandHandler : IRequestHandler<CreateCompanyCommand, Company>
+    internal class CreateCompanyCommandHandler(ICompanyRepository companyRepository) : IRequestHandler<CreateCompanyCommand, Company>
     {
-        private readonly ICompanyRepository _companyRepository;
-
-        public CreateCompanyCommandHandler(ICompanyRepository companyRepository)
-        {
-            _companyRepository = companyRepository;
-        }
+        private readonly ICompanyRepository _companyRepository = companyRepository;
 
         public async Task<Company> Handle(CreateCompanyCommand request, CancellationToken cancellationToken)
         {

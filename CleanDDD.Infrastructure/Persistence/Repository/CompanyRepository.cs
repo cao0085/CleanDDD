@@ -44,6 +44,15 @@ namespace CleanDDD.Infrastructure.Persistence.Repository
             await _baseDbContext.CompanyInfo.AddAsync(entity);
             await _baseDbContext.SaveChangesAsync();
         }
+
+        public async Task AddCompanyHeadcountAsync(string serialNo)
+        {
+
+            await _baseDbContext.Database.ExecuteSqlInterpolatedAsync(
+                        $@"UPDATE CompanyInfo
+                   SET Headcount = ISNULL(Headcount, 0) + 1
+                   WHERE SerialNo = {serialNo}");
+        }
     }
 
     public class CompanyReadRepository : ICompanyReadRepository

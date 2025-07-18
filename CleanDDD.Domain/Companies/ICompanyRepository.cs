@@ -10,5 +10,7 @@ namespace CleanDDD.Domain.Companies
     public interface ICompanyRepository
     {
         Task CreateCompanyAsync(Company company);
+
+        Task AddCompanyHeadcountAsync(string serialNo);
     }
 }

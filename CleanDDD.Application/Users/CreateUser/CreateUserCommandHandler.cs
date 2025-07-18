@@ -7,21 +7,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanDDD.Domain.Users.Events;
 
 
 namespace CleanDDD.Application.Users.CreateUser
 {
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, bool>
+    public class CreateUserCommandHandler(IUserRepository userRepository, IPasswordHasher passwordHasher, IMediator mediator) : IRequestHandler<CreateUserCommand, bool>
     {
 
-        private readonly IUserRepository _userRepository;
-        private readonly IPasswordHasher _passwordHasher;
-
-        public CreateUserCommandHandler(IUserRepository userRepository, IPasswordHasher passwordHasher)
-        {
-            _userRepository = userRepository;
-            _passwordHasher = passwordHasher;
-        }
+        private readonly IUserRepository _userRepository = userRepository;
+        private readonly IPasswordHasher _passwordHasher = passwordHasher;
+        private readonly IMediator _mediator = mediator;
         public async Task<bool> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             // 將明文密碼轉為 PasswordHash（封裝雜湊）
@@ -39,6 +35,10 @@ namespace CleanDDD.Application.Users.CreateUser
             );
 
             await _userRepository.CreateUserAsync(user);
+
+            var targetCompanySerialNo = "CHT-20250715";
+            await _mediator.Publish(new UserCreatedEvent(targetCompanySerialNo), cancellationToken);
+
             return true;
         }
     }
