@@ -8,15 +8,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CleanDDD.Domain.Users.Events;
+using CleanDDD.Application.Common;
+using CleanDDD.Domain;
 
 
 namespace CleanDDD.Application.Users.CreateUser
 {
-    public class CreateUserCommandHandler(IUserRepository userRepository, IPasswordHasher passwordHasher, IMediator mediator) : IRequestHandler<CreateUserCommand, bool>
+    public class CreateUserCommandHandler(IUserRepository userRepository, IPasswordHasher passwordHasher, IMediator mediator, IUnitOfWork unitOfWork, IOutboxRepository outboxRepository) : IRequestHandler<CreateUserCommand, bool>
     {
 
         private readonly IUserRepository _userRepository = userRepository;
         private readonly IPasswordHasher _passwordHasher = passwordHasher;
+        private readonly IOutboxRepository _outbox = outboxRepository;
+        private readonly IUnitOfWork _uow = unitOfWork;
         private readonly IMediator _mediator = mediator;
         public async Task<bool> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
@@ -37,7 +41,11 @@ namespace CleanDDD.Application.Users.CreateUser
             await _userRepository.CreateUserAsync(user);
 
             var targetCompanySerialNo = "CHT-20250715";
-            await _mediator.Publish(new UserCreatedEvent(targetCompanySerialNo), cancellationToken);
+
+            var domainEvent = new UserCreatedEvent(targetCompanySerialNo);
+            await _outbox.AddAsync(domainEvent);
+            await _uow.CommitAsync();      
+            //await _mediator.Publish(new UserCreatedEvent(targetCompanySerialNo), cancellationToken);
 
             return true;
         }

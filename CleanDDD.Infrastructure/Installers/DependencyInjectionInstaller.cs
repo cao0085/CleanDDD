@@ -18,6 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CleanDDD.Domain.PasswordHash;
 using CleanDDD.Infrastructure.Persistence.Repository;
+using CleanDDD.Application.Common;
 
 namespace CleanDDD.Infrastructure.Installers
 {
@@ -63,6 +64,8 @@ namespace CleanDDD.Infrastructure.Installers
             builder.Services.AddScoped<ICompanyReadRepository, CompanyReadRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddSingleton<IPasswordHasher, FakePasswordHasher>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IOutboxRepository,OutboxRepository>();
 
         }
 

@@ -33,7 +33,6 @@ namespace CleanDDD.Infrastructure.Persistence.Repository
             };
 
             await _baseDbContext.UserInfo.AddAsync(entity);
-            await _baseDbContext.SaveChangesAsync();
         }
     }
 }

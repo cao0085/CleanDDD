@@ -18,6 +18,8 @@ public partial class BaseDbContext : DbContext, IBaseDbContext
 
     public virtual DbSet<UserInfo> UserInfo { get; set; }
 
+    public virtual DbSet<OutboxMessage> OutboxMessage { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new Configurations.CompanyInfoConfiguration());
@@ -25,6 +27,8 @@ public partial class BaseDbContext : DbContext, IBaseDbContext
         modelBuilder.ApplyConfiguration(new Configurations.UserComanyMapConfiguration());
 
         modelBuilder.ApplyConfiguration(new Configurations.UserInfoConfiguration());
+
+        modelBuilder.ApplyConfiguration(new Configurations.OutboxMessageConfiguration());
 
         OnModelCreatingPartial(modelBuilder);
     }
@@ -37,4 +41,6 @@ public interface IBaseDbContext
     public DbSet<CompanyInfo> CompanyInfo { get; set; }
     public DbSet<UserComanyMap> UserComanyMap { get; set; }
     public DbSet<UserInfo> UserInfo { get; set; }
+
+    public DbSet<OutboxMessage> OutboxMessage { get; set; }
 }
