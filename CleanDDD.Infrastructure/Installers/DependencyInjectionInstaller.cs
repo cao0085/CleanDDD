@@ -6,9 +6,8 @@ using CleanDDD.Domain.Companies;
 using CleanDDD.Domain.Users;
 using CleanDDD.Infrastructure.Authentication;
 using CleanDDD.Infrastructure.Exceptions;
-using CleanDDD.Infrastructure.Persistence.Configuration.Domain.Company;
-using CleanDDD.Infrastructure.Persistence.Configuration.Domain.Users;
 using CleanDDD.Infrastructure.Shared;
+using CleanDDD.TestDoubles.PasswordHash;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +16,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanDDD.Domain.PasswordHash;
+using CleanDDD.Infrastructure.Persistence.Repository;
 
 namespace CleanDDD.Infrastructure.Installers
 {
@@ -61,6 +62,7 @@ namespace CleanDDD.Infrastructure.Installers
             builder.Services.AddScoped<ICompanyReadRepository, CompanyReadRepository>();
             builder.Services.AddScoped<ICompanyReadRepository, CompanyReadRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddSingleton<IPasswordHasher, FakePasswordHasher>();
 
         }
 

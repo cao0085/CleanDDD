@@ -1,6 +1,5 @@
-﻿using CleanDDD.Domain.Companies;
+﻿using CleanDDD.Domain.Users;
 using CleanDDD.Infrastructure.Persistence.BaseDb.Models;
-using CleanDDD.Domain.Users;
 using CleanDDD.Infrastructure.Persistence.BaseDb;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanDDD.Infrastructure.Persistence.Configuration.Domain.Users
+namespace CleanDDD.Infrastructure.Persistence.Repository
 {
     public class UserRepository : IUserRepository
     {

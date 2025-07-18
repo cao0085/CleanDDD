@@ -13,7 +13,7 @@ using CleanDDD.Infrastructure.Persistence.BaseDb;
 using CleanDDD.Domain.Companies;
 using DomainCompany = CleanDDD.Domain.Companies.Company;
 
-namespace CleanDDD.Infrastructure.Persistence.Configuration.Domain.Company
+namespace CleanDDD.Infrastructure.Persistence.Repository
 {
     public class CompanyRepository : ICompanyRepository
     {

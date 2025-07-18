@@ -10,6 +10,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Serialization;
+using CleanDDD.Domain.PasswordHash;
 
 namespace CleanDDD.Infrastructure.Authentication
 {
@@ -17,11 +18,13 @@ namespace CleanDDD.Infrastructure.Authentication
     {
         private readonly BaseDbContext _baseDbContext;
         private readonly IOptions<AppSettings> _options;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public JwtAuthenticationService(BaseDbContext baseDbContext, IOptions<AppSettings> options)
+        public JwtAuthenticationService(BaseDbContext baseDbContext, IOptions<AppSettings> options, IPasswordHasher passwordHasher)
         {
             _baseDbContext = baseDbContext;
             _options = options;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<(string accessToken, string refreshToken)> RequestTokenUsingPasswordGrantAsync(string username, string password)
@@ -30,7 +33,7 @@ namespace CleanDDD.Infrastructure.Authentication
 
             var authOptions = _options.Value.Authentication;
             var userInfo = await _baseDbContext.UserInfo.FirstOrDefaultAsync(x => x.Name == username);
-            if (userInfo == null || !HashHelper.Verify(password, userInfo.PasswordHash))
+            if (userInfo == null || !_passwordHasher.Verify(password, userInfo.PasswordHash))
             {
                 throw new ApplicationException("帳號或密碼錯誤");
             }
@@ -173,21 +176,5 @@ namespace CleanDDD.Infrastructure.Authentication
         [property: JsonPropertyName("access_token")] string AccessToken,
         [property: JsonPropertyName("refresh_token")] string RefreshToken
     );
-
-    public static class HashHelper
-    {
-        public static string ToMd5(string input)
-        {
-            using var md5 = MD5.Create();
-            var bytes = Encoding.UTF8.GetBytes(input);
-            var hash = md5.ComputeHash(bytes);
-            return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
-        }
-
-        public static bool Verify(string rawInput, string storedHash)
-        {
-            return ToMd5(rawInput) == storedHash;
-        }
-    }
 
 }

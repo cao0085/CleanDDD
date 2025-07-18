@@ -1,5 +1,6 @@
 ﻿using CleanDDD.Application.Authentication.LoginUser;
 using CleanDDD.Application.Authentication.RefreshToken;
+using CleanDDD.Application.Users.CreateUser;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -59,7 +60,7 @@ namespace CleanDDD.WebApi.Controllers
         }
 
         [HttpPost("CreateUser")]
-        public async Task<IActionResult> CreateUser(RefreshTokenCommand command)
+        public async Task<IActionResult> CreateUser(CreateUserCommand command)
         {
             var response = await _mediator.Send(command);
             return Ok(response);
