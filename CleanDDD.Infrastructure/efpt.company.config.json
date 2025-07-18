@@ -1,0 +1,81 @@
+﻿{
+   "CodeGenerationMode": 5,
+   "ContextClassName": "CompanyDbContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": "Persistence\\CompanyDb",
+   "OutputPath": "Persistence\\CompanyDb\\Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "CleanDDD.Infrastructure",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 4,
+   "SelectedToBeGenerated": 0,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[MachineInfo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RateDetail]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RateInfo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RoadSection]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RoadSideOrder]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RoadSideOrderDetail]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SiteInfo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UserSiteMap]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[VenderInterface]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": true,
+   "UseDatabaseNamesForRoutines": true,
+   "UseDateOnlyTimeOnly": false,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": false,
+   "UseInternalAccessModifiersForSprocsAndFunctions": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": true,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false,
+   "UseT4Split": true
+}
