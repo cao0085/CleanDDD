@@ -31,7 +31,7 @@ namespace CleanDDD.Infrastructure.Installers
             // Repository here:
             //builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
             //builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-
+            builder.Services.AddHostedService<OutboxDispatcherBackgroundService>();
             builder.Services.AddTransient<IDateTimeProvider, DateTimeProvider>();
             //builder.Services.AddTransient<IDomainEventDispatcher, DomainEventDispatcher>();
             //builder.Services.AddHostedService<DomainEventsProcessor>();
@@ -66,6 +66,7 @@ namespace CleanDDD.Infrastructure.Installers
             builder.Services.AddSingleton<IPasswordHasher, FakePasswordHasher>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IOutboxRepository,OutboxRepository>();
+
 
         }
 

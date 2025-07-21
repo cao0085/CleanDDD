@@ -18,7 +18,7 @@ public partial class BaseDbContext : DbContext, IBaseDbContext
 
     public virtual DbSet<UserInfo> UserInfo { get; set; }
 
-    public virtual DbSet<OutboxMessage> OutboxMessage { get; set; }
+    public virtual DbSet<OutboxMessages> OutboxMessages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -41,6 +41,5 @@ public interface IBaseDbContext
     public DbSet<CompanyInfo> CompanyInfo { get; set; }
     public DbSet<UserComanyMap> UserComanyMap { get; set; }
     public DbSet<UserInfo> UserInfo { get; set; }
-
-    public DbSet<OutboxMessage> OutboxMessage { get; set; }
+    public DbSet<OutboxMessages> OutboxMessages { get; set; }
 }

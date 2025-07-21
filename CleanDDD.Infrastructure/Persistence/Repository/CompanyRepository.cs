@@ -48,10 +48,12 @@ namespace CleanDDD.Infrastructure.Persistence.Repository
         public async Task AddCompanyHeadcountAsync(string serialNo)
         {
 
-            await _baseDbContext.Database.ExecuteSqlInterpolatedAsync(
+            var rows = await _baseDbContext.Database.ExecuteSqlInterpolatedAsync(
                         $@"UPDATE CompanyInfo
                    SET Headcount = ISNULL(Headcount, 0) + 1
                    WHERE SerialNo = {serialNo}");
+            if (rows == 0)
+                throw new InvalidOperationException($"Company {serialNo} not found");
         }
     }
 

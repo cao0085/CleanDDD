@@ -4,9 +4,9 @@ using CleanDDD.Infrastructure.Persistence.BaseDb.Models;
 
 namespace CleanDDD.Infrastructure.Persistence.BaseDb.Configurations
 {
-    public class OutboxMessageConfiguration : IEntityTypeConfiguration<OutboxMessage>
+    public class OutboxMessageConfiguration : IEntityTypeConfiguration<OutboxMessages>
     {
-        public void Configure(EntityTypeBuilder<OutboxMessage> builder)
+        public void Configure(EntityTypeBuilder<OutboxMessages> builder)
         {
             builder.ToTable("OutboxMessages");
 
@@ -26,6 +26,14 @@ namespace CleanDDD.Infrastructure.Persistence.BaseDb.Configurations
 
             builder.Property(x => x.RetryCount)
                 .HasDefaultValue(0);
+
+            builder.Property(x => x.MaxRetry)
+                        .IsRequired()
+                        .HasDefaultValue(3);
+
+            builder.Property(x => x.NextAttemptAt)
+                .IsRequired()
+                .HasDefaultValueSql("SYSUTCDATETIME()");
 
             builder.Property(x => x.CreatedAt)
                 .HasDefaultValueSql("SYSUTCDATETIME()");

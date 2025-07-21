@@ -18,7 +18,7 @@ namespace CleanDDD.Infrastructure.Persistence.Repository
 
         public Task AddAsync(INotification @event)
         {
-            var msg = new OutboxMessage
+            var msg = new OutboxMessages
             {
                 Id = Guid.NewGuid(),
                 EventType = @event.GetType().Name,
