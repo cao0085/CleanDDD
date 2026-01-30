@@ -1,49 +1,76 @@
+# CleanDDD
 
+A .NET 9 project template based on Clean Architecture and Domain-Driven Design (DDD) principles.
 
-## MediatR 註冊
+## Tech Stack
 
-``` csharp
+- .NET 9
+- ASP.NET Core Web API
+- MediatR (CQRS Pattern)
+- Scalar (API Documentation)
 
-    // RegisterServicesFromAssemblyContaining 為 MediatR v12 的新註冊方式
-    // 會替你在 DI 容器裡註冊： Transient<IMediator>, Singleton<ServiceFactory>和 Transient<自定義指令>
+## Project Structure
 
-    // 可以註冊 繼承 IRequest 介面的物件
-    // LoginUserCommand : IRequest<>
-    // 會從包含指定型別 T 所在的組件中註冊所有 IRequestHandler<,>、INotificationHandler<> 等相關服務。
-    public static void InstallMediatR(this WebApplicationBuilder builder)
-    {
-       builder.Services.AddMediatR(cfg =>
-       {
-           cfg.RegisterServicesFromAssemblyContaining<LoginUserCommand>();
-           cfg.RegisterServicesFromAssemblyContaining<RefreshTokenCommand>();
-       });
-    }
+```
+CleanDDD/
+├── CleanDDD.Domain/           # Domain Layer - Entities, Value Objects, Domain Events
+├── CleanDDD.Application/      # Application Layer - Commands, Queries, Handlers
+├── CleanDDD.Infrastructure/   # Infrastructure Layer - Database, External Services
+├── CleanDDD.WebApi/           # Presentation Layer - API Controllers
+└── CleanDDD.Domain.UnitTests/ # Domain Layer Unit Tests
 ```
 
-## MediatR 背後執行
+## Architecture
 
-``` csharp
-    // Mediator.Send 內部會：
-    // 先拿 request.GetType() 得到 實際型別 LoginUserCommand
-    // 以「Request 型別」當 key，看快取 (ConcurrentDictionary<Type, RequestHandlerWrapper>) 裡有沒有對應的 wrapper
-    // 如果沒有就用 反射 動態產生 RequestHandlerWrapperImpl<LoginUserCommand,(string,string)>
-    // 這個 RequestHandlerWrapper 會利用注入的 IServiceProvider：
-    var result = await _mediator.Send(new LoginUserCommand("user", "pwd"));
-    // 解析出對應的 Handler 再依序包上所有 IPipelineBehavior，最後呼叫 Handle() 返回結果。
-    var handler = serviceFactory(typeof(IRequestHandler<LoginUserCommand,(string,string)>));
+### Layer Dependencies
 
-
-    // Publish（事件廣播）把通知送給所有實作 INotificationHandler<UserLoggedInNotification> 的 handler
-    await _mediator.Publish(new UserLoggedInNotification(userId));
-
-    // Stream（v12 新功能）
-    await foreach (var item in _mediator.CreateStream(new SearchOrdersQuery(...)))
+```
+WebApi → Infrastructure → Application → Domain
 ```
 
-### Controller 基本流程
+- **Domain**: Core business logic, no external dependencies
+- **Application**: Use case implementations, defines interfaces (Ports)
+- **Infrastructure**: Implements Application layer interfaces (Adapters)
+- **WebApi**: HTTP entry point, handles request/response
 
-1. new 一個 _mediator ( DI -> Transient) + 辨認路由
-2. mediator.Send(command);  內部實作參考上面
-3. new LoginUserCommandHandler && 執行 Handle()
+## Getting Started
 
-### 
+```bash
+# Restore packages
+dotnet restore
+
+# Run the project
+dotnet run --project CleanDDD.WebApi
+
+# Run tests
+dotnet test
+```
+
+## Notes
+
+### MediatR Registration
+
+```csharp
+// MediatR v12 registration
+// Auto-registers IMediator, ServiceFactory, and custom Handlers
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssemblyContaining<LoginUserCommand>();
+});
+```
+
+### MediatR Execution Flow
+
+```csharp
+// Send - Single Handler processing
+var result = await _mediator.Send(new LoginUserCommand("user", "pwd"));
+
+// Publish - Broadcast event to all Handlers
+await _mediator.Publish(new UserLoggedInNotification(userId));
+```
+
+### Controller Flow
+
+1. Inject `IMediator` via DI
+2. Call `mediator.Send(command)` to dispatch command
+3. MediatR resolves and executes the corresponding Handler
