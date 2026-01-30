@@ -33,19 +33,6 @@ WebApi → Infrastructure → Application → Domain
 - **Infrastructure**: Implements Application layer interfaces (Adapters)
 - **WebApi**: HTTP entry point, handles request/response
 
-## Getting Started
-
-```bash
-# Restore packages
-dotnet restore
-
-# Run the project
-dotnet run --project CleanDDD.WebApi
-
-# Run tests
-dotnet test
-```
-
 ## Notes
 
 ### MediatR Registration
